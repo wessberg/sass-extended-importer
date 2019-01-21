@@ -97,8 +97,6 @@ function tryPath(path: string, options: SanitizedOptions): string[] {
 	const paths: string[] = [];
 	const partial = join(dirname(path), `_${basename(path)}`);
 
-	console.log({path, partial});
-
 	if (options.hooks.fs.existsSync(partial)) paths.push(partial);
 	if (options.hooks.fs.existsSync(path)) paths.push(path);
 	return paths;

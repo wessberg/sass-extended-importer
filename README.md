@@ -56,7 +56,7 @@ resolve("~my-library");
 ```
 
 The resolve function will use Node Module Resolution to find the library, and then look at the `main` property within the related `package.json` file.
-If it points to a file, for example `index.js`, for which there is an identically named file with an extension of `.scss`, `.sass , or`.css`, or if the`main`
+If it points to a file, for example `index.js`, for which there is an identically named file with an extension of `.scss`, `.sass` , or `.css`, or if the `main`
 property directly points to a file with a supported extension, that file will be resolved.
 
 ### Adjusting supported extensions
@@ -64,7 +64,9 @@ property directly points to a file with a supported extension, that file will be
 You can alter what kind of extensions that can be resolved by providing an Iterable list of strings as an options argument to `resolve`:
 
 ```typescript
-resolve("foo/bar", {extensions: [".myextname", ".awesome", ".foobarbaz"]});
+resolve("foo/bar", {
+	extensions: [".myextname", ".awesome", ".foobarbaz"]
+});
 ```
 
 ## Contributing
