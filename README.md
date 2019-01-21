@@ -7,18 +7,18 @@
 
 # `@wessberg/sass-extended-import-resolve`
 
-> A Custom Sass Import Resolver with included support for Node Module Resolution and additional file extensions
+> A Custom Sass Import Resolver with included support for [Node Module Resolution](https://nodejs.org/api/modules.html#modules_all_together) and additional file extensions
 
 ## Description
 
-This is an implementation of the [Sass Import Resolve algorithm](https://github.com/sass/dart-sass/blob/0f7f9e69a72e612412b51bfa2fe1384f778e2821/lib/src/importer/utils.dart), with added support for Node Module Resolution.
+This is an implementation of the [Sass Import Resolve algorithm](https://github.com/sass/dart-sass/blob/0f7f9e69a72e612412b51bfa2fe1384f778e2821/lib/src/importer/utils.dart), with added support for [Node Module Resolution](https://nodejs.org/api/modules.html#modules_all_together).
 
 At the moment, without this Custom importer, Sass library creators and consumers can:
 
 - Ship `.scss`, `.sass`, or `.css` files via `node_modules`, and let consumers depend on files directly, - but not support hoisted dependencies/monorepos.
 - Use [`Eyeglass`](https://github.com/sass-eyeglass/eyeglass)
 
-This implementation follows the convention of existing tooling and similar solutions that paths with a leading `~` will be resolved via node module resolution.
+This implementation follows the convention of existing tooling and similar solutions that paths with a leading `~` will be resolved via [Node Module Resolution](https://nodejs.org/api/modules.html#modules_all_together).
 
 ## Install
 
@@ -55,7 +55,7 @@ Prefix the path with a `~` to indicate to the resolve algorithm that you'll be l
 resolve("~my-library");
 ```
 
-The resolve function will use Node Module Resolution to find the library, and then look at the `main` property within the related `package.json` file.
+The resolve function will use [Node Module Resolution](https://nodejs.org/api/modules.html#modules_all_together) to find the library, and then look at the `main` property within the related `package.json` file.
 If it points to a file, for example `index.js`, for which there is an identically named file with an extension of `.scss`, `.sass` , or `.css`, or if the `main`
 property directly points to a file with a supported extension, that file will be resolved.
 
