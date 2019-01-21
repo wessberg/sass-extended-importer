@@ -73,7 +73,7 @@ resolve("foo/bar", {
 ### Using it with `node-sass`
 
 [`node-sass`](https://github.com/sass/node-sass) is a library that provides bindings to LibSass, the C version of the popular stylesheet preprocessor, Sass.
-With it, you can provide this library as a custom resolver for import paths: 
+With it, you can provide this library as a custom resolver for import paths:
 
 ```javascript
 import {resolve} from "@wessberg/sass-extended-import-resolve";
@@ -81,13 +81,11 @@ import sass from "node-sass";
 import {dirname} from "path";
 
 sass.render({
-  file: '/path/to/my-file.scss',
+  file: "/path/to/my-file.scss",
   importer: function(id, parentId) {
-  	const resolved = resolve(id, {cwd: dirname(parentId)});
-  	return resolved != null
-  	? {file: resolved}
-  	: null;
-  },
+    const resolved = resolve(id, {cwd: dirname(parentId)});
+    return resolved != null ? {file: resolved} : null;
+  }
 });
 ```
 
