@@ -77,6 +77,7 @@
 	},
 	"scaffold": {
 		"patreonUserId": "11315442",
+		"logo": "https://raw.githubusercontent.com/wessberg/sass-extended-import-resolve/master/documentation/asset/logo.png",
 		"contributorMeta": {
 			"Frederik Wessberg": {
 				"imageUrl": "https://avatars2.githubusercontent.com/u/20454213?s=460&v=4",

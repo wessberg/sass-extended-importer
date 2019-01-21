@@ -1,3 +1,4 @@
+<img alt="Logo for @wessberg/sass-extended-import-resolve" src="https://raw.githubusercontent.com/wessberg/sass-extended-import-resolve/master/documentation/asset/logo.png" height="200"></img><br>
 <a href="https://npmcharts.com/compare/@wessberg/sass-extended-import-resolve?minimal=true"><img alt="Downloads per month" src="https://img.shields.io/npm/dm/%40wessberg%2Fsass-extended-import-resolve.svg" height="20"></img></a>
 <a href="https://david-dm.org/wessberg/sass-extended-import-resolve"><img alt="Dependencies" src="https://img.shields.io/david/wessberg/sass-extended-import-resolve.svg" height="20"></img></a>
 <a href="https://www.npmjs.com/package/@wessberg/sass-extended-import-resolve"><img alt="NPM Version" src="https://badge.fury.io/js/%40wessberg%2Fsass-extended-import-resolve.svg" height="20"></img></a>
@@ -66,6 +67,27 @@ You can alter what kind of extensions that can be resolved by providing an Itera
 ```typescript
 resolve("foo/bar", {
   extensions: [".myextname", ".awesome", ".foobarbaz"]
+});
+```
+
+### Using it with `node-sass`
+
+[`node-sass`](https://github.com/sass/node-sass) is a library that provides bindings to LibSass, the C version of the popular stylesheet preprocessor, Sass.
+With it, you can provide this library as a custom resolver for import paths: 
+
+```javascript
+import {resolve} from "@wessberg/sass-extended-import-resolve";
+import sass from "node-sass";
+import {dirname} from "path";
+
+sass.render({
+  file: '/path/to/my-file.scss',
+  importer: function(id, parentId) {
+  	const resolved = resolve(id, {cwd: dirname(parentId)});
+  	return resolved != null
+  	? {file: resolved}
+  	: null;
+  },
 });
 ```
 
