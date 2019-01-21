@@ -1,4 +1,4 @@
-# 1.0.0 (2019-01-21)
+## [1.0.1](https://github.com/wessberg/sass-extended-import-resolve/compare/0a72215...v1.0.1) (2019-01-21)
 
 
 ### Bug Fixes
