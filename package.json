@@ -1,6 +1,6 @@
 {
 	"name": "@wessberg/sass-extended-import-resolve",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"description": "A Custom Sass Import Resolver with included support for Node Module Resolution and additional file extensions",
 	"repository": {
 		"type": "git",
