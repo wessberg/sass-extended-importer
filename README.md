@@ -65,7 +65,7 @@ You can alter what kind of extensions that can be resolved by providing an Itera
 
 ```typescript
 resolve("foo/bar", {
-	extensions: [".myextname", ".awesome", ".foobarbaz"]
+  extensions: [".myextname", ".awesome", ".foobarbaz"]
 });
 ```
 
