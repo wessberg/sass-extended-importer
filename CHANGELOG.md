@@ -1,3 +1,12 @@
+# [0.4.0](https://github.com/wessberg/sass-extended-importer/compare/v0.3.0...v0.4.0) (2021-10-13)
+
+
+### Bug Fixes
+
+* fix problem with path mapping ([0f8207d](https://github.com/wessberg/sass-extended-importer/commit/0f8207dbfc2c6f7aae8f9339f5f31974542efe6f))
+
+
+
 # [0.3.0](https://github.com/wessberg/sass-extended-importer/compare/v0.2.0...v0.3.0) (2021-10-13)
 
 

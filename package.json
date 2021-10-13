@@ -1,6 +1,6 @@
 {
 	"name": "sass-extended-importer",
-	"version": "0.3.0",
+	"version": "0.4.0",
 	"description": "A Custom Sass Import Resolver with included support for Node Module Resolution, additional file extensions, and path aliases/path mapping",
 	"scripts": {
 		"generate:sandhog": "sandhog all --yes",
