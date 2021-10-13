@@ -1,7 +1,7 @@
 import path from "crosspath";
 import fs, {Stats} from "fs";
 import minimatch from "minimatch";
-import {sync as resolve} from "resolve";
+import {sync as resolveNodeModule} from "resolve";
 import {FileSystem} from "./lib/file-system";
 
 interface ResolveResult {
@@ -37,28 +37,33 @@ export interface ExtendedImporterOptions {
 	paths: Record<string, string[] | string>;
 }
 
+/**
+ * A Custom Importer for sass/scss with support for Node Module Resolution and path mapping/aliasing
+ */
 export default function extendedImporter(options?: Partial<ExtendedImporterOptions>): Importer {
-	const {fileSystem = fs, nodeModuleResolutionPrefix = "~", extensions = [".scss", ".sass", ".css"], paths = {}, cwd} = options ?? {};
+	return (p, prev) => resolve(p, {cwd: path.dirname(prev), ...options});
+}
 
-	return (url, prev) => {
-		const sanitizedOptions = {
-			fileSystem,
-			nodeModuleResolutionPrefix,
-			extensions,
-			paths,
-			cwd: cwd ?? path.dirname(prev)
-		};
+/**
+ * Resolves sass/scss files with support for Node Module Resolution and path mapping/aliasing
+ */
+export function resolve(p: string, options?: Partial<ExtendedImporterOptions>): ResolveResult|null {
+	const sanitizedOptions = sanitizeOptions(options);
 
-		const useNodeModuleResolution = url.startsWith(sanitizedOptions.nodeModuleResolutionPrefix);
-		const sanitizedUrls = resolveMaybeAliasedPath(path.normalize(useNodeModuleResolution ? url.slice(sanitizedOptions.nodeModuleResolutionPrefix.length) : url), sanitizedOptions);
+	const useNodeModuleResolution = p.startsWith(sanitizedOptions.nodeModuleResolutionPrefix);
+	const sanitizedUrls = resolveMaybeAliasedPath(path.normalize(useNodeModuleResolution ? p.slice(sanitizedOptions.nodeModuleResolutionPrefix.length) : p), sanitizedOptions);
 
-		for (const sanitizedUrl of sanitizedUrls) {
-			const resolved = useNodeModuleResolution ? nodeModuleResolutionStrategy(sanitizedUrl, sanitizedOptions) : sassStrategy(sanitizedUrl, sanitizedOptions);
-			if (resolved != null) return resolved;
-		}
+	for (const sanitizedUrl of sanitizedUrls) {
+		const resolved = useNodeModuleResolution ? nodeModuleResolutionStrategy(sanitizedUrl, sanitizedOptions) : sassStrategy(sanitizedUrl, sanitizedOptions);
+		if (resolved != null) return resolved;
+	}
 
-		return null;
-	};
+	return null;
+}
+
+function sanitizeOptions (options?: Partial<ExtendedImporterOptions>): ExtendedImporterOptions {
+	const {fileSystem = fs, nodeModuleResolutionPrefix = "~", extensions = [".scss", ".sass", ".css"], paths = {}, cwd = process.cwd()} = options ?? {};
+	return {fileSystem, nodeModuleResolutionPrefix, extensions, paths, cwd};
 }
 
 function resolveMaybeAliasedPath(p: string, options: ExtendedImporterOptions): string[] {
@@ -73,7 +78,7 @@ function resolveMaybeAliasedPath(p: string, options: ExtendedImporterOptions): s
 
 function nodeModuleResolutionStrategy(p: string, options: ExtendedImporterOptions): ResolveResult | undefined {
 	try {
-		const resolvedFile = resolve(p, {
+		const resolvedFile = resolveNodeModule(p, {
 			basedir: options.cwd,
 			extensions: [...options.extensions, ...SCRIPT_EXTENSIONS],
 			readFileSync: file => options.fileSystem.readFileSync(file).toString(),

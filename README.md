@@ -86,6 +86,7 @@ This implementation follows the convention of existing tooling and similar solut
   - [Path mapping/aliasing](#path-mappingaliasing)
   - [Adjusting allowed extensions](#adjusting-allowed-extensions)
   - [Customizing the file system](#customizing-the-file-system)
+  - [Usage with other tools and libraries](#usage-with-other-tools-and-libraries)
 - [Contributing](#contributing)
 - [Maintainers](#maintainers)
 - [FAQ](#faq)
@@ -274,6 +275,17 @@ sass({
 		fileSystem
 	})
 });
+```
+
+### Usage with other tools and libraries
+
+The resolve algorithm implemented by this library is also exported as as helper function, `resolve`, that can be used outside of just as a Custom Importer for Sass.
+To use it directly, simply import `resolve`:
+
+```typescript
+import {resolve} from "sass-extended-importer";
+
+resolve("~my-library", {cwd: "/path/to/directory"});
 ```
 
 <!-- SHADOW_SECTION_CONTRIBUTING_START -->
