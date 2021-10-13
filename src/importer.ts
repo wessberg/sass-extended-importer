@@ -68,7 +68,10 @@ function sanitizeOptions (options?: Partial<ExtendedImporterOptions>): ExtendedI
 
 function resolveMaybeAliasedPath(p: string, options: ExtendedImporterOptions): string[] {
 	for (const key of Object.keys(options.paths)) {
-		if (!minimatch(p, key)) continue;
+		// Replace single asterisks with multiple ones
+		const normalizedKey = key.replace(/(?<!\*)\*(?!\*)/, "**");
+
+		if (!minimatch(p, normalizedKey)) continue;
 		const lastIndexOfAsterisk = key.lastIndexOf("*");
 		const pFromAsterisk = lastIndexOfAsterisk < 0 ? "" : p.slice(lastIndexOfAsterisk);
 		return ensureArray(options.paths[key]).map(value => path.join(value.replace(/(\\|\/)+\*$/gi, ""), pFromAsterisk));
