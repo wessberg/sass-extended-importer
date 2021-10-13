@@ -5,18 +5,18 @@ import {createImporter, ExtendedImporterOptions} from "../../src/importer";
 import {FileResult} from "./test-result";
 import {Sass} from "../../src/lib/sass";
 
-export interface TestSassResult {
+export interface TestImporterResult {
 	output: FileResult[];
 }
 
-export interface TestSassOptions extends Omit<ExtendedImporterOptions, "fileSystem"> {
+export interface TestImporterOptions extends Omit<ExtendedImporterOptions, "fileSystem"> {
 	sass: Sass;
 }
 
 /**
  * Prepares a test
  */
-export async function testSass(inputFiles: TestFileRecord[], options?: Partial<TestSassOptions>): Promise<TestSassResult> {
+export async function testImporter(inputFiles: TestFileRecord[], options?: Partial<TestImporterOptions>): Promise<TestImporterResult> {
 	const {
 		context,
 		fileSystem,

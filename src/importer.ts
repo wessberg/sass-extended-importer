@@ -100,8 +100,8 @@ function nodeModuleResolutionStrategy(p: string, options: ExtendedImporterOption
 		});
 
 		return {
-			file: resolvedFile,
-			contents: options.fileSystem.readFileSync(resolvedFile, "utf-8")
+			file: path.native.normalize(resolvedFile),
+			contents: options.fileSystem.readFileSync(path.native.normalize(resolvedFile), "utf-8")
 		};
 	} catch (ex) {
 		return undefined;
@@ -125,8 +125,8 @@ function sassStrategy(p: string, options: ExtendedImporterOptions): ResolveResul
 	if (resolvedFile == null) return undefined;
 
 	return {
-		file: resolvedFile,
-		contents: options.fileSystem.readFileSync(resolvedFile, "utf-8")
+		file: path.native.normalize(resolvedFile),
+		contents: options.fileSystem.readFileSync(path.native.normalize(resolvedFile), "utf-8")
 	};
 }
 
@@ -141,9 +141,10 @@ function tryPathWithExtensionsSync(p: string, options: ExtendedImporterOptions):
  * Returns the path and/or the partial with the same name, if either or both exists
  */
 function tryPathSync(p: string, options: ExtendedImporterOptions): string[] {
-	const partial = path.join(path.dirname(p), `_${path.basename(p)}`);
+	const absolutePath = path.isAbsolute(p) ? p : path.join(options.cwd, p);
+	const absolutePartial = path.join(path.dirname(absolutePath), `_${path.basename(absolutePath)}`);
 
-	return [...(isFileSync(partial, options.fileSystem) ? [partial] : []), ...(isFileSync(p, options.fileSystem) ? [p] : [])];
+	return [...(isFileSync(absolutePartial, options.fileSystem) ? [absolutePartial] : []), ...(isFileSync(absolutePath, options.fileSystem) ? [absolutePath] : [])];
 }
 
 function isFileSync(p: string, fileSystem: FileSystem): boolean {
@@ -156,7 +157,7 @@ function isDirectorySync(p: string, fileSystem: FileSystem): boolean {
 
 function safeStatSync(p: string, fileSystem: FileSystem): Stats | undefined {
 	try {
-		return fileSystem.statSync(p);
+		return fileSystem.statSync(path.native.normalize(p));
 	} catch {
 		return undefined;
 	}
