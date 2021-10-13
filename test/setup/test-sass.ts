@@ -1,7 +1,7 @@
 import {createTestSetup} from "./test-setup";
 import {TestFileRecord} from "./test-file";
 import {promisify} from "util";
-import extendedImporter, {ExtendedImporterOptions} from "../../src/importer";
+import {createImporter, ExtendedImporterOptions} from "../../src/importer";
 import {FileResult} from "./test-result";
 import {Sass} from "../../src/lib/sass";
 
@@ -28,7 +28,7 @@ export async function testSass(inputFiles: TestFileRecord[], options?: Partial<T
 		throw new ReferenceError(`No entry could be found`);
 	}
 
-	const importer = extendedImporter({...options, ...context, fileSystem});
+	const importer = createImporter({...options, ...context, fileSystem});
 	const sass = promisify(context.sass.render);
 
 	for (const entry of entries) {

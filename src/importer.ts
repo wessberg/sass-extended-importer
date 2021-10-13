@@ -38,9 +38,9 @@ export interface ExtendedImporterOptions {
 }
 
 /**
- * A Custom Importer for sass/scss with support for Node Module Resolution and path mapping/aliasing
+ * Creates a Custom Importer for sass/scss with support for Node Module Resolution and path mapping/aliasing
  */
-export default function extendedImporter(options?: Partial<ExtendedImporterOptions>): Importer {
+export function createImporter(options?: Partial<ExtendedImporterOptions>): Importer {
 	return (p, prev) => resolve(p, {cwd: path.dirname(prev), ...options});
 }
 

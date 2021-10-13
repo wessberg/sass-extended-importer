@@ -126,16 +126,16 @@ $ pnpm add sass-extended-importer --save-dev
 
 ### Usage with sass
 
-To use it with the primary [`sass`](https://github.com/sass/dart-sass) package (dart-sass), simply import the default export from this package and invoke it with the options you want to provide.
+To use it with the primary [`sass`](https://github.com/sass/dart-sass) package (dart-sass), simply import the `createImporter` function from this package and invoke it with the options you want to provide.
 Then pass it to `sass` is an import resolver:
 
 ```typescript
-import importer from "sass-extended-importer";
+import {createImporter} from "sass-extended-importer";
 import sass from "sass";
 
 sass({
 	file: "/path/to/your/file.scss",
-	importer: importer({
+	importer: createImporter({
 		// options
 	})
 });
@@ -143,16 +143,16 @@ sass({
 
 ### Usage with node-sass
 
-To use it with [`node-sass`](https://github.com/sass/node-sass), simply import the default export from this package and invoke it with the options you want to provide.
+To use it with [`node-sass`](https://github.com/sass/node-sass), simply import the `createImporter` function from this package and invoke it with the options you want to provide.
 Then pass it to `node-sass` is an import resolver:
 
 ```typescript
-import importer from "sass-extended-importer";
+import {createImporter} from "sass-extended-importer";
 import sass from "node-sass";
 
 sass({
 	file: "/path/to/your/file.scss",
-	importer: importer({
+	importer: createImporter({
 		// options
 	})
 });
@@ -193,12 +193,12 @@ This means that all of the following examples will work:
 The default prefix of `~` (tilde) is a convention used by several popular tools and is the general recommendation. However, you can customize it with the `nodeModuleResolutionPrefix` option for the importer:
 
 ```typescript
-import importer from "sass-extended-importer";
+import {createImporter} from "sass-extended-importer";
 import sass from "sass";
 
 sass({
 	// ...
-	importer: importer({
+	importer: createImporter({
 		// Use # instead of ~
 		nodeModuleResolutionPrefix: "#"
 	})
@@ -213,12 +213,12 @@ For example, you might be using TypeScript's path mapping feature, and want to m
 You can customize it with the `paths` option for the importer:
 
 ```typescript
-import importer from "sass-extended-importer";
+import {createImporter} from "sass-extended-importer";
 import sass from "sass";
 
 sass({
 	// ...
-	importer: importer({
+	importer: createImporter({
 		paths: {
 			"my-alias": ["../other-folder/src/index.scss"],
 			"my-alias/*": ["../other-folder/src/*"]
@@ -240,12 +240,12 @@ Which will actually be mapped to `../other-folder/src/foo.scss`.
 You can alter what kind of extensions that can be resolved via the `extensions` option for the importer:
 
 ```typescript
-import importer from "sass-extended-importer";
+import {createImporter} from "sass-extended-importer";
 import sass from "sass";
 
 sass({
 	// ...
-	importer: importer({
+	importer: createImporter({
 		// Use # instead of ~
 		extensions: [".myextension", ".foo", ".bar"]
 	})
@@ -257,7 +257,7 @@ sass({
 If you use a virtual file system, such as one that exists within memory, you can pass it in as the `fileSystem` option for the importer. If you don't, it defaults to using the `fs` module:
 
 ```typescript
-import importer from "sass-extended-importer";
+import {createImporter} from "sass-extended-importer";
 import sass from "sass";
 import path from "path";
 import {createFsFromVolume, Volume} from "memfs";
@@ -270,7 +270,7 @@ const fileSystem = createFsFromVolume(vol);
 
 sass({
 	// ...
-	importer: importer({
+	importer: createImporter({
 		// Use another file system
 		fileSystem
 	})
