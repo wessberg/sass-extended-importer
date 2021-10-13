@@ -1,4 +1,14 @@
-# 0.1.0 (2021-10-13)
+# [0.2.0](https://github.com/wessberg/sass-extended-importer/compare/v0.1.0...v0.2.0) (2021-10-13)
+
+
+### Features
+
+* expose as named export ([ceee12a](https://github.com/wessberg/sass-extended-importer/commit/ceee12ae0351ee75c43ee87e3216528b5870ed7d))
+* expose the resolve logic as a separate helper function ([88a9159](https://github.com/wessberg/sass-extended-importer/commit/88a915959f1efabde43bb1ca1e68101fa3e4eb7d))
+
+
+
+# [0.1.0](https://github.com/wessberg/sass-extended-importer/compare/0a72215c17c381380c2c2011c477110a813e6617...v0.1.0) (2021-10-13)
 
 
 ### Bug Fixes
