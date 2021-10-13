@@ -6,7 +6,7 @@
 
 <!-- SHADOW_SECTION_DESCRIPTION_SHORT_START -->
 
-> A Custom Sass Import Resolver with included support for Node Module Resolution, additional file extensions, and path mapping
+> A Custom Sass Import Resolver with included support for Node Module Resolution, additional file extensions, and path aliases/path mapping
 
 <!-- SHADOW_SECTION_DESCRIPTION_SHORT_END -->
 
@@ -35,7 +35,7 @@ At the moment, without this Custom importer, to import files via Node Module Res
 - Ship `.scss`, `.sass`, or `.css` files via `node_modules`, and let consumers depend on files directly, - but not support hoisted dependencies/monorepos.
 - Use [`Eyeglass`](https://github.com/sass-eyeglass/eyeglass)
 
-There are no known other import resolvers that support path mapping, which can be useful for simplifying import paths or dividing packages in a monorepo.
+One major use case for this library is to support path mapping, which can be useful for many things, includiong simplifying import paths or dividing packages in a monorepo.
 
 This implementation follows the convention of existing tooling and similar solutions that paths with a leading `~` will be resolved via [Node Module Resolution](https://nodejs.org/api/modules.html#modules_all_together).
 
@@ -79,6 +79,13 @@ This implementation follows the convention of existing tooling and similar solut
   - [Yarn](#yarn)
   - [pnpm](#pnpm)
 - [Usage](#usage)
+  - [Usage with sass](#usage-with-sass)
+  - [Usage with node-sass](#usage-with-node-sass)
+  - [Resolving files within Node Modules](#resolving-files-within-node-modules)
+    - [Customizing the prefix](#customizing-the-prefix)
+  - [Path mapping/aliasing](#path-mappingaliasing)
+  - [Adjusting allowed extensions](#adjusting-allowed-extensions)
+  - [Customizing the file system](#customizing-the-file-system)
 - [Contributing](#contributing)
 - [Maintainers](#maintainers)
 - [FAQ](#faq)
@@ -126,11 +133,11 @@ import importer from "sass-extended-importer";
 import sass from "sass";
 
 sass({
-			file: "/path/to/your/file.scss",
-			importer: importer({
-        // options
-      })
-		});
+	file: "/path/to/your/file.scss",
+	importer: importer({
+		// options
+	})
+});
 ```
 
 ### Usage with node-sass
@@ -143,11 +150,11 @@ import importer from "sass-extended-importer";
 import sass from "node-sass";
 
 sass({
-			file: "/path/to/your/file.scss",
-			importer: importer({
-        // options
-      })
-		});
+	file: "/path/to/your/file.scss",
+	importer: importer({
+		// options
+	})
+});
 ```
 
 ### Resolving files within Node Modules
@@ -189,12 +196,12 @@ import importer from "sass-extended-importer";
 import sass from "sass";
 
 sass({
-			// ...
-			importer: importer({
-        // Use # instead of ~
-        nodeModuleResolutionPrefix: "#"
-      })
-		});
+	// ...
+	importer: importer({
+		// Use # instead of ~
+		nodeModuleResolutionPrefix: "#"
+	})
+});
 ```
 
 ### Path mapping/aliasing
@@ -202,21 +209,21 @@ sass({
 You can use path mapping to map import paths to other import paths.
 This can be useful to simplify import statements, or if you use sass/scss/css in combination with a build pipeline that performs path mapping on your other application- or library code.
 For example, you might be using TypeScript's path mapping feature, and want to make sure the same paths are supported inside the sass/scss/css files you're importing from there.
-You can customize it with the `paths` option for the importer:  
+You can customize it with the `paths` option for the importer:
 
 ```typescript
 import importer from "sass-extended-importer";
 import sass from "sass";
 
 sass({
-			// ...
-			importer: importer({
-        paths: {
-          "my-alias": ["../other-folder/src/index.scss"],
-          "my-alias/*": ["../other-folder/src/*"]
-        }
-      })
-		});
+	// ...
+	importer: importer({
+		paths: {
+			"my-alias": ["../other-folder/src/index.scss"],
+			"my-alias/*": ["../other-folder/src/*"]
+		}
+	})
+});
 ```
 
 This allows you do write styles such as:
@@ -236,16 +243,12 @@ import importer from "sass-extended-importer";
 import sass from "sass";
 
 sass({
-			// ...
-			importer: importer({
-        // Use # instead of ~
-        extensions: [
-          ".myextension",
-          ".foo",
-          ".bar"
-        ]
-      })
-		});
+	// ...
+	importer: importer({
+		// Use # instead of ~
+		extensions: [".myextension", ".foo", ".bar"]
+	})
+});
 ```
 
 ### Customizing the file system
@@ -265,12 +268,12 @@ vol.writeFileSync("/my/directory/foo.scss", "p {color: red}");
 const fileSystem = createFsFromVolume(vol);
 
 sass({
-			// ...
-			importer: importer({
-        // Use another file system
-        fileSystem
-      })
-		});
+	// ...
+	importer: importer({
+		// Use another file system
+		fileSystem
+	})
+});
 ```
 
 <!-- SHADOW_SECTION_CONTRIBUTING_START -->
