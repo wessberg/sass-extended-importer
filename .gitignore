@@ -1,12 +1,10 @@
-/node_modules/
 /compiled/
-/dist/
-/typings/
-package-lock.json
 /.idea/
 /.cache/
 /.vscode/
 *.log
+/test-app/
+/test-app_old/
 /logs/
 npm-debug.log*
 /lib-cov/
@@ -34,3 +32,6 @@ Thumbs.db
 *.p12
 *.crt
 *.csr
+/node_modules/
+/dist/
+/tsconfig.build.tsbuildinfo
