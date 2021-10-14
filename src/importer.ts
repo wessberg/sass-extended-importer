@@ -28,9 +28,9 @@ interface MaybeAliasedPathResult {
 
 export interface ResolveOptions extends ExtendedImporterOptions {
 	/**
-	 * The parent file from which the path is imported
+	 * The directory of the parent file from which the path is imported
 	 */
-	parent: string|undefined;
+	parentDir: string|undefined;
 }
 
 
@@ -65,7 +65,7 @@ export interface ExtendedImporterOptions {
  * Creates a Custom Importer for sass/scss with support for Node Module Resolution and path mapping/aliasing
  */
 export function createImporter(options?: Partial<ExtendedImporterOptions>): Importer {
-	return (p, parent) => resolve(p, {...options, parent});
+	return (p, parent) => resolve(p, {...options, parentDir: path.dirname(parent)});
 }
 
 /**
@@ -87,8 +87,8 @@ export function resolve(p: string, options?: Partial<ResolveOptions>): ResolveRe
 }
 
 function sanitizeOptions (options?: Partial<ResolveOptions>): ResolveOptions {
-	const {fileSystem = fs, nodeModuleResolutionPrefix = "~", extensions = [".scss", ".sass", ".css"], paths = {}, cwd = process.cwd(), parent} = options ?? {};
-	return {fileSystem, nodeModuleResolutionPrefix, extensions, paths, cwd, parent};
+	const {fileSystem = fs, nodeModuleResolutionPrefix = "~", extensions = [".scss", ".sass", ".css"], paths = {}, cwd = process.cwd(), parentDir} = options ?? {};
+	return {fileSystem, nodeModuleResolutionPrefix, extensions, paths, cwd, parentDir};
 }
 
 function resolveMaybeAliasedPath(p: string, options: ResolveOptions): MaybeAliasedPathResult {
@@ -109,7 +109,7 @@ function resolveMaybeAliasedPath(p: string, options: ResolveOptions): MaybeAlias
 	}
 	return {
 		paths: [p],
-		baseDir: options.parent == null ? options.cwd : path.dirname(options.parent)
+		baseDir: options.parentDir == null ? options.cwd : options.parentDir
 	};
 }
 
