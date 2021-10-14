@@ -586,3 +586,46 @@ test("Supports path mapping. #3", withSass, async (t, {sass}) => {
 		`)
 	);
 });
+
+test("Supports path mapping. #4", withSass, async (t, {sass}) => {
+	const result = await testImporter(
+		[
+			{
+				entry: false,
+				fileName: "./foo/src/index.scss",
+				text: `\
+					$color: red;
+					`
+			},
+			{
+				entry: true,
+				fileName: "foo/bar/baz/index.scss",
+				text: `\
+					@import "my-alias";
+					p {
+						color: $color;
+					}
+					`
+			}
+		],
+		{
+			sass,
+			paths: {
+				"my-alias": ["./foo/src/index.scss"],
+				"my-alias/*": ["./foo/src/*"]
+			}
+		}
+	);
+	const {
+		output: [file]
+	} = result;
+
+	t.deepEqual(
+		formatCode(file.code),
+		formatCode(`\
+		p {
+			color: red;
+		}
+		`)
+	);
+});

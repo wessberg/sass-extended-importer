@@ -13,11 +13,35 @@ const SCRIPT_EXTENSIONS = [".js", ".mjs", ".cjs"];
 
 type Importer = (url: string, prev: string) => ResolveResult | null;
 
+interface ResolveInternalOptions extends ResolveOptions {
+	/**
+	 * The directory from which to resolve import specifiers.
+	 * May change with path mapping
+	 */
+	baseDir: string;
+}
+
+interface MaybeAliasedPathResult {
+	paths: string[];
+	baseDir: string;
+}
+
+export interface ResolveOptions extends ExtendedImporterOptions {
+	/**
+	 * The parent file from which the path is imported
+	 */
+	parent: string|undefined;
+}
+
+
 export interface ExtendedImporterOptions {
+	/**
+	 * The file system implementation to use
+	 */
 	fileSystem: FileSystem;
 
 	/**
-	 * The working directory to use as root. Defaults to using that of the importing file
+	 * The working directory to use as root. Defaults to process.cwd()
 	 */
 	cwd: string;
 
@@ -41,32 +65,33 @@ export interface ExtendedImporterOptions {
  * Creates a Custom Importer for sass/scss with support for Node Module Resolution and path mapping/aliasing
  */
 export function createImporter(options?: Partial<ExtendedImporterOptions>): Importer {
-	return (p, prev) => resolve(p, {cwd: path.dirname(prev), ...options});
+	return (p, parent) => resolve(p, {...options, parent});
 }
 
 /**
  * Resolves sass/scss files with support for Node Module Resolution and path mapping/aliasing
  */
-export function resolve(p: string, options?: Partial<ExtendedImporterOptions>): ResolveResult|null {
+export function resolve(p: string, options?: Partial<ResolveOptions>): ResolveResult|null {
 	const sanitizedOptions = sanitizeOptions(options);
 
 	const useNodeModuleResolution = p.startsWith(sanitizedOptions.nodeModuleResolutionPrefix);
-	const sanitizedUrls = resolveMaybeAliasedPath(path.normalize(useNodeModuleResolution ? p.slice(sanitizedOptions.nodeModuleResolutionPrefix.length) : p), sanitizedOptions);
+	const {baseDir, paths} = resolveMaybeAliasedPath(path.normalize(useNodeModuleResolution ? p.slice(sanitizedOptions.nodeModuleResolutionPrefix.length) : p), sanitizedOptions);
+	const internalOptions = {...sanitizedOptions, baseDir};
 
-	for (const sanitizedUrl of sanitizedUrls) {
-		const resolved = useNodeModuleResolution ? nodeModuleResolutionStrategy(sanitizedUrl, sanitizedOptions) : sassStrategy(sanitizedUrl, sanitizedOptions);
+	for (const sanitizedPath of paths) {
+		const resolved = useNodeModuleResolution ? nodeModuleResolutionStrategy(sanitizedPath, internalOptions) : sassStrategy(sanitizedPath, internalOptions);
 		if (resolved != null) return resolved;
 	}
 
 	return null;
 }
 
-function sanitizeOptions (options?: Partial<ExtendedImporterOptions>): ExtendedImporterOptions {
-	const {fileSystem = fs, nodeModuleResolutionPrefix = "~", extensions = [".scss", ".sass", ".css"], paths = {}, cwd = process.cwd()} = options ?? {};
-	return {fileSystem, nodeModuleResolutionPrefix, extensions, paths, cwd};
+function sanitizeOptions (options?: Partial<ResolveOptions>): ResolveOptions {
+	const {fileSystem = fs, nodeModuleResolutionPrefix = "~", extensions = [".scss", ".sass", ".css"], paths = {}, cwd = process.cwd(), parent} = options ?? {};
+	return {fileSystem, nodeModuleResolutionPrefix, extensions, paths, cwd, parent};
 }
 
-function resolveMaybeAliasedPath(p: string, options: ExtendedImporterOptions): string[] {
+function resolveMaybeAliasedPath(p: string, options: ResolveOptions): MaybeAliasedPathResult {
 	for (const key of Object.keys(options.paths)) {
 		// Replace single asterisks with multiple ones
 		const normalizedKey = key.replace(/(?<!\*)\*(?!\*)/, "**");
@@ -74,12 +99,21 @@ function resolveMaybeAliasedPath(p: string, options: ExtendedImporterOptions): s
 		if (!minimatch(p, normalizedKey)) continue;
 		const lastIndexOfAsterisk = key.lastIndexOf("*");
 		const pFromAsterisk = lastIndexOfAsterisk < 0 ? "" : p.slice(lastIndexOfAsterisk);
-		return ensureArray(options.paths[key]).map(value => path.join(value.replace(/(\\|\/)+\*$/gi, ""), pFromAsterisk));
+		const paths = ensureArray(options.paths[key]).map(value => path.join(value.replace(/(\\|\/)+\*$/gi, ""), pFromAsterisk));
+
+		return {
+			paths,
+			// Resolve mapped paths from the cwd
+			baseDir: options.cwd
+		}
 	}
-	return [p];
+	return {
+		paths: [p],
+		baseDir: options.parent == null ? options.cwd : path.dirname(options.parent)
+	};
 }
 
-function nodeModuleResolutionStrategy(p: string, options: ExtendedImporterOptions): ResolveResult | undefined {
+function nodeModuleResolutionStrategy(p: string, options: ResolveInternalOptions): ResolveResult | undefined {
 	try {
 		const resolvedFile = resolveNodeModule(p, {
 			basedir: options.cwd,
@@ -111,7 +145,7 @@ function nodeModuleResolutionStrategy(p: string, options: ExtendedImporterOption
 	}
 }
 
-function sassStrategy(p: string, options: ExtendedImporterOptions): ResolveResult | undefined {
+function sassStrategy(p: string, options: ResolveInternalOptions): ResolveResult | undefined {
 	let resolvedFile: string | undefined;
 
 	// If the path has a specific extension, we might skip a lot of work and just be able to resolve that file directly.
@@ -136,15 +170,15 @@ function sassStrategy(p: string, options: ExtendedImporterOptions): ResolveResul
 /**
  * Like tryPath, but checks for all possible extensions
  */
-function tryPathWithExtensionsSync(p: string, options: ExtendedImporterOptions): string[] {
+function tryPathWithExtensionsSync(p: string, options: ResolveInternalOptions): string[] {
 	return options.extensions.map(extension => [tryPathSync(`${p}${extension}`, options), tryPathSync(path.join(p, `index${extension}`), options)]).flat(2);
 }
 
 /**
  * Returns the path and/or the partial with the same name, if either or both exists
  */
-function tryPathSync(p: string, options: ExtendedImporterOptions): string[] {
-	const absolutePath = path.isAbsolute(p) ? p : path.join(options.cwd, p);
+function tryPathSync(p: string, options: ResolveInternalOptions): string[] {
+	const absolutePath = path.isAbsolute(p) ? p : path.join(options.baseDir, p);
 	const absolutePartial = path.join(path.dirname(absolutePath), `_${path.basename(absolutePath)}`);
 
 	return [...(isFileSync(absolutePartial, options.fileSystem) ? [absolutePartial] : []), ...(isFileSync(absolutePath, options.fileSystem) ? [absolutePath] : [])];

@@ -31,5 +31,3 @@ test("Supports using the 'resolve' function directly. #2", async t => {
 
 	t.deepEqual(path.normalize(output.fileName), path.join(process.cwd(), `../../lib/bar/baz.scss`));
 });
-
-
