@@ -1,3 +1,12 @@
+## [0.4.2](https://github.com/wessberg/sass-extended-importer/compare/v0.4.1...v0.4.2) (2021-10-14)
+
+
+### Features
+
+* rename parent to parentDir ([c6f45cc](https://github.com/wessberg/sass-extended-importer/commit/c6f45cc409bb90b8e6b9edd88f0ec0f19ae083ed))
+
+
+
 ## [0.4.1](https://github.com/wessberg/sass-extended-importer/compare/v0.4.0...v0.4.1) (2021-10-14)
 
 
