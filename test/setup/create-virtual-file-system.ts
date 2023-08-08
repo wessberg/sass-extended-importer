@@ -1,9 +1,9 @@
 import path from "crosspath";
-import {TestFileRecord} from "./test-file";
+import type {TestFileRecord} from "./test-file.js";
 import {createFsFromVolume, Volume} from "memfs";
-import {FileSystem} from "../../src/lib/file-system";
+import type {FileSystem} from "../../src/lib/file-system.js";
 
-export function createVirtualFileSystem(files: Pick<TestFileRecord, "fileName"|"text">[]): FileSystem {
+export function createVirtualFileSystem(files: Pick<TestFileRecord, "fileName" | "text">[]): FileSystem {
 	const vol = new Volume();
 	for (const file of files) {
 		vol.mkdirSync(path.dirname(file.fileName), {recursive: true});

@@ -1,9 +1,10 @@
-import {createTestSetup} from "./test-setup";
-import {TestFileRecord} from "./test-file";
+import {createTestSetup} from "./test-setup.js";
+import type {TestFileRecord} from "./test-file.js";
 import {promisify} from "util";
-import {createImporter, ExtendedImporterOptions} from "../../src/importer";
-import {FileResult} from "./test-result";
-import {Sass} from "../../src/lib/sass";
+import type {ExtendedImporterOptions} from "../../src/importer.js";
+import {createImporter} from "../../src/importer.js";
+import type {FileResult} from "./test-result.js";
+import type {Sass} from "../../src/lib/sass.js";
 
 export interface TestImporterResult {
 	output: FileResult[];
@@ -32,11 +33,14 @@ export async function testImporter(inputFiles: TestFileRecord[], options?: Parti
 	const sass = promisify(context.sass.render);
 
 	for (const entry of entries) {
-		const {css, stats} = await sass({
+		const result = await sass({
 			file: entry.fileName,
 			data: entry.text,
 			importer
 		});
+		if (result == null) continue;
+		const {css, stats} = result;
+
 		output.push({
 			code: css.toString(),
 			fileName: stats.entry

@@ -1,8 +1,9 @@
 import path from "crosspath";
-import fs, {Stats} from "fs";
-import minimatch from "minimatch";
+import type {Stats} from "fs";
+import fs from "fs";
+import {minimatch} from "minimatch";
 import {sync as resolveNodeModule} from "resolve";
-import {FileSystem} from "./lib/file-system";
+import type {FileSystem} from "./lib/file-system.js";
 
 interface ResolveResult {
 	file: string;
@@ -30,9 +31,8 @@ export interface ResolveOptions extends ExtendedImporterOptions {
 	/**
 	 * The directory of the parent file from which the path is imported
 	 */
-	parentDir: string|undefined;
+	parentDir: string | undefined;
 }
-
 
 export interface ExtendedImporterOptions {
 	/**
@@ -71,7 +71,7 @@ export function createImporter(options?: Partial<ExtendedImporterOptions>): Impo
 /**
  * Resolves sass/scss files with support for Node Module Resolution and path mapping/aliasing
  */
-export function resolve(p: string, options?: Partial<ResolveOptions>): ResolveResult|null {
+export function resolve(p: string, options?: Partial<ResolveOptions>): ResolveResult | null {
 	const sanitizedOptions = sanitizeOptions(options);
 
 	const useNodeModuleResolution = p.startsWith(sanitizedOptions.nodeModuleResolutionPrefix);
@@ -86,7 +86,7 @@ export function resolve(p: string, options?: Partial<ResolveOptions>): ResolveRe
 	return null;
 }
 
-function sanitizeOptions (options?: Partial<ResolveOptions>): ResolveOptions {
+function sanitizeOptions(options?: Partial<ResolveOptions>): ResolveOptions {
 	const {fileSystem = fs, nodeModuleResolutionPrefix = "~", extensions = [".scss", ".sass", ".css"], paths = {}, cwd = process.cwd(), parentDir} = options ?? {};
 	return {fileSystem, nodeModuleResolutionPrefix, extensions, paths, cwd, parentDir};
 }
@@ -105,7 +105,7 @@ function resolveMaybeAliasedPath(p: string, options: ResolveOptions): MaybeAlias
 			paths,
 			// Resolve mapped paths from the cwd
 			baseDir: options.cwd
-		}
+		};
 	}
 	return {
 		paths: [p],

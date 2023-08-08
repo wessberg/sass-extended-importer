@@ -1,5 +1,5 @@
 import path from "crosspath";
-import {TestContext} from "./test-context";
+import type {TestContext} from "./test-context.js";
 
 export interface TestFileRecord {
 	entry: boolean;

@@ -1,7 +1,8 @@
-import {TestFileRecord} from "./test-file";
-import {resolve, ExtendedImporterOptions} from "../../src/importer";
-import {FileResult} from "./test-result";
-import {createVirtualFileSystem} from "./create-virtual-file-system";
+import type {TestFileRecord} from "./test-file.js";
+import type {ExtendedImporterOptions} from "../../src/importer.js";
+import {resolve} from "../../src/importer.js";
+import type {FileResult} from "./test-result.js";
+import {createVirtualFileSystem} from "./create-virtual-file-system.js";
 
 export interface TestResolveResult {
 	output: FileResult;

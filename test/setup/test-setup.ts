@@ -1,8 +1,10 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import {createTestContext, TestContext} from "./test-context";
-import {createTestFileStructure, TestFileRecord, TestFileStructure} from "./test-file";
-import {createVirtualFileSystem} from "./create-virtual-file-system";
-import {FileSystem} from "../../src/lib/file-system";
+import type {TestContext} from "./test-context.js";
+import {createTestContext} from "./test-context.js";
+import type {TestFileRecord, TestFileStructure} from "./test-file.js";
+import {createTestFileStructure} from "./test-file.js";
+import {createVirtualFileSystem} from "./create-virtual-file-system.js";
+import type {FileSystem} from "../../src/lib/file-system.js";
 
 export interface TestSetup {
 	context: TestContext;

@@ -1,6 +1,6 @@
 import path from "crosspath";
 import sassModule from "sass";
-import {Sass} from "../../src/lib/sass";
+import type {Sass} from "../../src/lib/sass.js";
 
 export interface TestContext {
 	cwd: string;

@@ -1,10 +1,9 @@
-import test from "ava";
-import {formatCode} from "./util/format-code";
-import {testImporter} from "./setup/test-importer";
-import {createExternalTestFiles} from "./setup/test-file";
-import {withSass} from "./util/sass-macro";
+import {formatCode} from "./util/format-code.js";
+import {testImporter} from "./setup/test-importer.js";
+import {createExternalTestFiles} from "./setup/test-file.js";
+import {test} from "./util/test-runner.js";
 
-test("Can resolve modules via Node Module Resolution. #1", withSass, async (t, {sass}) => {
+test("Can resolve modules via Node Module Resolution. #1", "*", async (t, {sass}) => {
 	const result = await testImporter(
 		[
 			...createExternalTestFiles("my-library", `$color: red;`, {
@@ -39,7 +38,7 @@ test("Can resolve modules via Node Module Resolution. #1", withSass, async (t, {
 	);
 });
 
-test("Can resolve modules via Node Module Resolution. #2", withSass, async (t, {sass}) => {
+test("Can resolve modules via Node Module Resolution. #2", "*", async (t, {sass}) => {
 	const result = await testImporter(
 		[
 			...createExternalTestFiles("my-library", `$color: red`, {
@@ -74,7 +73,7 @@ test("Can resolve modules via Node Module Resolution. #2", withSass, async (t, {
 	);
 });
 
-test("Can resolve modules via Node Module Resolution. #3", withSass, async (t, {sass}) => {
+test("Can resolve modules via Node Module Resolution. #3", "*", async (t, {sass}) => {
 	const result = await testImporter(
 		[
 			...createExternalTestFiles("my-library", `h1 {color: green}`, {
@@ -111,7 +110,7 @@ test("Can resolve modules via Node Module Resolution. #3", withSass, async (t, {
 	);
 });
 
-test("Can resolve modules via Node Module Resolution. #4", withSass, async (t, {sass}) => {
+test("Can resolve modules via Node Module Resolution. #4", "*", async (t, {sass}) => {
 	const result = await testImporter(
 		[
 			...createExternalTestFiles("my-library", `$color: red;`, {
@@ -146,7 +145,7 @@ test("Can resolve modules via Node Module Resolution. #4", withSass, async (t, {
 	);
 });
 
-test("Can resolve modules via Node Module Resolution. #5", withSass, async (t, {sass}) => {
+test("Can resolve modules via Node Module Resolution. #5", "*", async (t, {sass}) => {
 	const result = await testImporter(
 		[
 			...createExternalTestFiles("my-library", `$color: red;`, {
@@ -181,7 +180,7 @@ test("Can resolve modules via Node Module Resolution. #5", withSass, async (t, {
 	);
 });
 
-test("Can resolve modules via Node Module Resolution. #6", withSass, async (t, {sass}) => {
+test("Can resolve modules via Node Module Resolution. #6", "*", async (t, {sass}) => {
 	const result = await testImporter(
 		[
 			...createExternalTestFiles("my-library", `$color: red;`, {
@@ -216,7 +215,7 @@ test("Can resolve modules via Node Module Resolution. #6", withSass, async (t, {
 	);
 });
 
-test("Can resolve modules via Node Module Resolution. #7", withSass, async (t, {sass}) => {
+test("Can resolve modules via Node Module Resolution. #7", "*", async (t, {sass}) => {
 	const result = await testImporter(
 		[
 			...createExternalTestFiles("my-library", `$color: red;`, {
@@ -257,7 +256,7 @@ test("Can resolve modules via Node Module Resolution. #7", withSass, async (t, {
 	);
 });
 
-test("Can resolve partials. #1", withSass, async (t, {sass}) => {
+test("Can resolve partials. #1", "*", async (t, {sass}) => {
 	const result = await testImporter(
 		[
 			{
@@ -302,7 +301,7 @@ test("Can resolve partials. #1", withSass, async (t, {sass}) => {
 	);
 });
 
-test("Can resolve scss files with specific extensions. #1", withSass, async (t, {sass}) => {
+test("Can resolve scss files with specific extensions. #1", "*", async (t, {sass}) => {
 	const result = await testImporter(
 		[
 			{
@@ -341,7 +340,7 @@ test("Can resolve scss files with specific extensions. #1", withSass, async (t, 
 	);
 });
 
-test("Can resolve scss files with specific extensions. #2", withSass, async (t, {sass}) => {
+test("Can resolve scss files with specific extensions. #2", "*", async (t, {sass}) => {
 	const result = await testImporter(
 		[
 			{
@@ -380,7 +379,7 @@ test("Can resolve scss files with specific extensions. #2", withSass, async (t, 
 	);
 });
 
-test("Can resolve scss files with specific extensions. #3", withSass, async (t, {sass}) => {
+test("Can resolve scss files with specific extensions. #3", "*", async (t, {sass}) => {
 	const result = await testImporter(
 		[
 			{
@@ -419,7 +418,7 @@ test("Can resolve scss files with specific extensions. #3", withSass, async (t, 
 	);
 });
 
-test("Can resolve scss files with specific extensions. #4", withSass, async (t, {sass}) => {
+test("Can resolve scss files with specific extensions. #4", "*", async (t, {sass}) => {
 	const result = await testImporter(
 		[
 			{
@@ -458,7 +457,7 @@ test("Can resolve scss files with specific extensions. #4", withSass, async (t, 
 	);
 });
 
-test("Supports path mapping. #1", withSass, async (t, {sass}) => {
+test("Supports path mapping. #1", "*", async (t, {sass}) => {
 	const result = await testImporter(
 		[
 			{
@@ -501,7 +500,7 @@ test("Supports path mapping. #1", withSass, async (t, {sass}) => {
 	);
 });
 
-test("Supports path mapping. #2", withSass, async (t, {sass}) => {
+test("Supports path mapping. #2", "*", async (t, {sass}) => {
 	const result = await testImporter(
 		[
 			{
@@ -544,7 +543,7 @@ test("Supports path mapping. #2", withSass, async (t, {sass}) => {
 	);
 });
 
-test("Supports path mapping. #3", withSass, async (t, {sass}) => {
+test("Supports path mapping. #3", "*", async (t, {sass}) => {
 	const result = await testImporter(
 		[
 			{
@@ -587,7 +586,7 @@ test("Supports path mapping. #3", withSass, async (t, {sass}) => {
 	);
 });
 
-test("Supports path mapping. #4", withSass, async (t, {sass}) => {
+test("Supports path mapping. #4", "*", async (t, {sass}) => {
 	const result = await testImporter(
 		[
 			{
