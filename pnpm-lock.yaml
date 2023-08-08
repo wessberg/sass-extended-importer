@@ -25,9 +25,6 @@ devDependencies:
   "@types/resolve":
     specifier: ^1.20.2
     version: 1.20.2
-  "@types/sass":
-    specifier: ^1.43.1
-    version: 1.43.1
   "@types/semver":
     specifier: ^7.5.0
     version: 7.5.0
@@ -92,8 +89,8 @@ devDependencies:
     specifier: ^3.27.2
     version: 3.27.2
   rollup-plugin-ts:
-    specifier: ^3.4.3
-    version: 3.4.3(rollup@3.27.2)(typescript@5.1.6)
+    specifier: ^3.4.4
+    version: 3.4.4(rollup@3.27.2)(typescript@5.1.6)
   sandhog:
     specifier: ^2.0.2
     version: 2.0.2
@@ -786,12 +783,6 @@ packages:
 
   /@types/responselike@1.0.0:
     resolution: {integrity: sha512-85Y2BjiufFzaMIlvJDvTTB8Fxl2xfLo4HgmHzVBz08w4wDePCTjYw66PdrolO0kzli3yam/YCgRufyo1DdQVTA==}
-    dependencies:
-      "@types/node": 20.4.9
-    dev: true
-
-  /@types/sass@1.43.1:
-    resolution: {integrity: sha512-BPdoIt1lfJ6B7rw35ncdwBZrAssjcwzI5LByIrYs+tpXlj/CAkuVdRsgZDdP4lq5EjyWzwxZCqAoFyHKFwp32g==}
     dependencies:
       "@types/node": 20.4.9
     dev: true
@@ -3108,7 +3099,7 @@ packages:
       fs.realpath: 1.0.0
       inflight: 1.0.6
       inherits: 2.0.4
-      minimatch: 3.1.2
+      minimatch: 3.0.8
       once: 1.4.0
       path-is-absolute: 1.0.1
     dev: true
@@ -6200,8 +6191,8 @@ packages:
       glob: 10.3.3
     dev: true
 
-  /rollup-plugin-ts@3.4.3(rollup@3.27.2)(typescript@5.1.6):
-    resolution: {integrity: sha512-W76Q47JpyPhhAp1SXLi9HK1XRo/RPclPQizs1IS2mN1aVKtTp9O4IJEtmN2OwQLJbYFuCZqayxtG+aQSdEHMnA==}
+  /rollup-plugin-ts@3.4.4(rollup@3.27.2)(typescript@5.1.6):
+    resolution: {integrity: sha512-xgHn5o/1GD222EWxmMQYiWR00oEClv86O5fiEiIVtcaGXV2yWMn6x6jr082A/xmxu3CcdXiTUHomi/9FXTepWg==}
     engines: {node: ">=16.15.1", npm: ">=7.0.0", pnpm: ">=3.2.0", yarn: ">=1.13"}
     peerDependencies:
       "@babel/core": ">=7.x"
