@@ -2,7 +2,7 @@ import path from "crosspath";
 import type {Stats} from "fs";
 import fs from "fs";
 import {minimatch} from "minimatch";
-import {sync as resolveNodeModule} from "resolve";
+import resolveModule from "resolve";
 import type {FileSystem} from "./lib/file-system.js";
 
 interface ResolveResult {
@@ -115,7 +115,7 @@ function resolveMaybeAliasedPath(p: string, options: ResolveOptions): MaybeAlias
 
 function nodeModuleResolutionStrategy(p: string, options: ResolveInternalOptions): ResolveResult | undefined {
 	try {
-		const resolvedFile = resolveNodeModule(p, {
+		const resolvedFile = resolveModule.sync(p, {
 			basedir: options.cwd,
 			extensions: [...options.extensions, ...SCRIPT_EXTENSIONS],
 			readFileSync: file => options.fileSystem.readFileSync(file).toString(),
