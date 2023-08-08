@@ -1,3 +1,9 @@
+## [1.0.1](https://github.com/wessberg/sass-extended-importer/compare/v1.0.0...v1.0.1) (2023-08-08)
+
+### Bug Fixes
+
+- use the 'resolve' module correctly ([f217473](https://github.com/wessberg/sass-extended-importer/commit/f21747373d31babedb7b0b33c93ed14fc28facf4))
+
 # [1.0.0](https://github.com/wessberg/sass-extended-importer/compare/v0.4.2...v1.0.0) (2023-08-08)
 
 ### Features
